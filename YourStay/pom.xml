@@ -32,7 +32,14 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-				
+		
+		<!-- FileServiceImpl @Resource -->
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+		
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -58,6 +65,7 @@
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -88,7 +96,7 @@
 			</exclusions>
 			<scope>runtime</scope>
 		</dependency>
-		 -->
+		-->
 
 		<!-- @Inject -->
 		<dependency>
@@ -97,7 +105,6 @@
 			<version>1</version>
 		</dependency>
 				
-
 		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 		<dependency>
 		    <groupId>javax.servlet</groupId>
@@ -124,20 +131,21 @@
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
 			<scope>test</scope>
-		</dependency>  
-		 -->    
-		<dependency> <!-- junit 테스트 -->
+		</dependency>
+		 -->        
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
-		</dependency> 
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-		<dependency><!-- getter,setter 자동완성 -->
+		<dependency>
 		    <groupId>org.projectlombok</groupId>
 		    <artifactId>lombok</artifactId>
 		    <version>1.18.6</version>
 		    <scope>provided</scope>
-		</dependency> 
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -145,7 +153,8 @@
 		    <version>${org.springframework-version}</version>
 		    <scope>test</scope>
 		</dependency>
-		<dependency><!--  -->
+		
+	    <dependency>
 			<groupId>com.oracle.ojdbc</groupId>
 			<artifactId>ojdbc8</artifactId>
 			<version>19.3.0.0</version>
@@ -165,57 +174,72 @@
 			<artifactId>HikariCP</artifactId>
 			<version>2.7.8</version>
 		</dependency>
+		
 		<dependency>
-	         <groupId>org.bgee.log4jdbc-log4j2</groupId>
-	         <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
-	         <version>1.16</version>
-      </dependency>	
-      <dependency>
-         <groupId>org.mybatis</groupId>
-         <artifactId>mybatis</artifactId>
-         <version>3.4.6</version>
-      </dependency>
-      <dependency>
-         <groupId>org.mybatis</groupId>
-         <artifactId>mybatis-spring</artifactId>
-         <version>1.3.2</version>
-      </dependency>	 
-      <dependency>
-	         <groupId>commons-fileupload</groupId>
-	         <artifactId>commons-fileupload</artifactId>
-	         <version>1.2.1</version> 
-      </dependency>
-      <dependency>
-	         <groupId>commons-io</groupId>
-	         <artifactId>commons-io</artifactId>
-	         <version>2.5</version>
-      </dependency>
-      <dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.9.4</version>
+			<groupId>org.bgee.log4jdbc-log4j2</groupId>
+			<artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+			<version>1.16</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.4.6</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.fasterxml.jackson.dataformat</groupId>
-		    <artifactId>jackson-dataformat-xml</artifactId>
-		    <version>2.9.6</version>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.3.2</version>
 		</dependency>
-		<dependency>
-		    <groupId>com.google.code.gson</groupId>
-		    <artifactId>gson</artifactId>
-		    <version>2.8.2</version>
-		</dependency>
-		<!-- Append for ObjectMapper -->
-		<dependency> 
-			<groupId>org.codehaus.jackson</groupId> 
-			<artifactId>jackson-core-lgpl</artifactId> 
-			<version>1.9.11</version> 
-		</dependency>	
-		<dependency> 
-			<groupId>org.codehaus.jackson</groupId> 
-			<artifactId>jackson-mapper-asl</artifactId> 
-			<version>1.9.11</version> 
-		</dependency>     
+		<!-- commons-fileupload -->
+      <dependency>
+         <groupId>commons-fileupload</groupId>
+         <artifactId>commons-fileupload</artifactId>
+         <version>1.2.1</version> 
+      </dependency>
+      <dependency>
+         <groupId>commons-io</groupId>
+         <artifactId>commons-io</artifactId>
+         <version>2.5</version>
+      </dependency>
+      <!-- pom.xml for ajax -->
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.9.4</version>
+      </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-xml</artifactId>
+          <version>2.9.6</version>
+      </dependency>
+      <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+          <version>2.8.2</version>
+      </dependency>
+      <!-- Append for ObjectMapper -->
+      <dependency> 
+         <groupId>org.codehaus.jackson</groupId> 
+         <artifactId>jackson-core-lgpl</artifactId> 
+         <version>1.9.11</version> 
+      </dependency>   
+      <dependency> 
+         <groupId>org.codehaus.jackson</groupId> 
+         <artifactId>jackson-mapper-asl</artifactId> 
+         <version>1.9.11</version> 
+      </dependency>
+      <!-- for AOP -->
+      <dependency>
+		   <groupId>org.aspectj</groupId>
+		   <artifactId>aspectjrt</artifactId>
+		   <version>${org.aspectj-version}</version>
+	    </dependency>
+	   <dependency>
+		   <groupId>org.aspectj</groupId>
+		   <artifactId>aspectjweaver</artifactId>
+		   <version>${org.aspectj-version}</version>
+	   </dependency>
 	</dependencies>
     <build>
         <plugins>
@@ -238,8 +262,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>

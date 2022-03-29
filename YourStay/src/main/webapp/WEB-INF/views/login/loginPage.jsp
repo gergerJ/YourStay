@@ -5,6 +5,9 @@
 <head>
 <link rel="stylesheet" href="../css/login.css">
 <link rel="stylesheet" href="../css/airDnDCSS.css?ver=3"> 
+<link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="../css/blog.css" type="text/css" media="all" />
+
 <style>
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
@@ -105,6 +108,7 @@
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
    $("#password").keypress(function(e) { 
@@ -129,22 +133,6 @@ $(document).ready(function(){
        }   
    });
 
-   
-   $("#logo").click(function(){
-		window.location="index.jsp";
-	});
-	var checkShow = false;
-	$("#rollDown").hide();
-	$("#tempImg").click(function(){
-		if(checkShow == false){
-			$("#rollDown").show();
-			checkShow = true;
-		}else{
-			$("#rollDown").hide();
-			checkShow = false;
-		}
-
-	});
     $("#loginBtn").click(function(){
         // 태크.val() : 태그에 입력된 값
         // 태크.val("값") : 태그의 값을 변경 
@@ -166,54 +154,52 @@ $(document).ready(function(){
         document.form1.submit();
     });
 });
-
-
-
 </script>
  <title>Insert title here</title>
  
  </head>
  <body class="body">
-	<div id="top">
-		<img src="img/logo.png" id="logo">
-		<div id="memberStatus">
-			<div id="nomemberStatusWrapper">
-				<div id="noMemberStatus">
-					<a class="indexFont" href="join.jsp">회원가입</a>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<a class="indexFont" href="login.jsp">로그인</a>
-				</div>
-			</div>	
-		</div>
-	</div>
+<header class="blog-header py-3">
+    <div class="row flex-nowrap justify-content-between align-items-center">
+      <div class="col-4 pt-1">
+      </div>
+      <div class="col-4 text-center">
+        <a class="blog-header-logo text-dark" href="/">YourStay</a>
+      </div>
+      <div class="col-4 d-flex justify-content-end align-items-center">
+        <a class="link-secondary" href="#" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"/><path d="M21 21l-5.2-5.2"/></svg>
+        </a>
+        <a class="btn btn-sm btn-outline-secondary" href="login/loginPage">Sign up</a>
+      </div>
+    </div>
+  </header>
    
    <div id="body" style="background-image: URL(img/background2.jpg); background-repeat: no-repeat; width: 100%; height:700px;">
    
       <div class="loginForm">
       <form method="post" name="form1" class="form" action="loginCheck.do">
+      <c:if test="${member == null}">
          <div class="box">
-            <input type="text" name="id" id="id" class="iText" value="이메일 입력하세요.">
+            <input type="text" name="memail" id="id" class="iText" placeholder="E-mail">
             <br> 
-            <input type="password" name="pw" id="password" class="iText" value="비밀번호 입력하세요." onkeydown='javascript:onEnterSubmit()'>
+            <input type="password" name="mpwd" id="password" class="iText" placeholder="Password">
             <br>
-            <input type="button" id="loginBtn" class="loginBtn" value="로그인" >
-                  <p class="message">ID가 없으신가요? <a href="join.jsp">회원가입</a></p>
+            <input type="button" id="loginBtn" class="loginBtn" value="로그인" style="background: linear-gradient(to left, #2AC1BC, #2AC1BC);">
+                  <p class="message">ID가 없으신가요? <a href="joinPage">회원가입</a></p>
          </div>
+         </c:if>
+		<c:if test="${msg == false}">
+			<p style="color: red;">로그인 실패! 아이디와 비밀번호 확인해주세요.</p>
+		</c:if>
       </form>
    </div>
    </div> 
-   <div id="footer">
-      <div id="footerContentsWrapepr">
-         <div id="footerContents1">
-            <img id="footerLogo" src="img/logo.png"/>
-            <p id="footerP1">공지사항</p><p id="footerP1Right">4조 화이팅!! 모두들 수고많았습니다!! 2달 동안 정말 즐거웠고 남은 인턴도 잘 보내요!!</p>
-         </div>
-         <div id="footerContents2">
-            <p id="footerP2">회사소개 · 광고안내 · 검색등록 · 제휴문의 · 인재채용 · 서비스약관 · 청소년보호정책 · 개인정보처리방침 · 웹접근성안내 · 고객센터<br>
-            Copyright © Skdidimdol Corp. All rights reserved.      
-            </p>
-         </div>
-      </div>
-   </div>
+<footer class="blog-footer">
+  <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+  <p>
+    <a href="#">Back to top</a>
+  </p>
+</footer>
 </body>
 </html>
