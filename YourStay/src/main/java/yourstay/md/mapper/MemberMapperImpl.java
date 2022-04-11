@@ -6,14 +6,23 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
+
+import jdk.internal.jline.internal.Log;
+import lombok.extern.log4j.Log4j;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 
+import yourstay.md.controller.MypageController;
 import yourstay.md.domain.MemberVO;
 import static yourstay.md.domain.LoginConst.*;
+
+
 @Primary
 @Repository
+//@Mapper
 public class MemberMapperImpl implements MemberMapper {
 	@Autowired
 	SqlSession session;
@@ -32,14 +41,22 @@ public class MemberMapperImpl implements MemberMapper {
 	public int addUser(MemberVO user) {
 		return session.insert("yourstay.md.mapper.MemberMapper.insertUser", user);
 	}
-
+	
+	@Override
+	public int updateUser(MemberVO member) {
+		System.out.println("update MemberMapper");
+		System.out.println("MemberMapperImpl - updateMember - mpwd : "+ member.getMpwd());
+		System.out.println("MemberMapperImpl - updateMember - mcallnum : "+ member.getMcallnum());
+		return session.update("yourstay.md.mapper.MemberMapper.updateUser", member);
+	}
+	
 	@Override
 	public int removeUser(String memail) {
 		return session.delete("yourstay.md.mapper.MemberMapper.deleteUser", memail);
 	}
 
 	@Override
-	public int login(String memail, String mpwd) {
+	public boolean login(String memail, String mpwd) {
 		Map<String, String> parameters = new HashMap<>();
 		parameters.put("memail", memail);
 		parameters.put("mpwd", mpwd);
@@ -47,9 +64,9 @@ public class MemberMapperImpl implements MemberMapper {
 		MemberVO result = session.selectOne("yourstay.md.mapper.MemberMapper.loginUser", parameters);
 		
 		if(result != null)
-			return YES_ID_PWD;
+			return true;
 		else
-			return EX_ID;
+			return false;
 	}
 
 }

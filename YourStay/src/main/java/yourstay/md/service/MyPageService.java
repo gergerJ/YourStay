@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import yourstay.md.domain.Accommodation;
+import yourstay.md.domain.MemberVO;
 import yourstay.md.domain.WishListVO;
 
 public interface MyPageService {
@@ -19,4 +20,5 @@ public interface MyPageService {
 	 * 
 	 */
 	Map<String, List> getWishS(long mseq);
+	
 }

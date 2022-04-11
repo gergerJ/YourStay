@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import yourstay.md.domain.Accommodation;
+import yourstay.md.domain.MemberVO;
 import yourstay.md.domain.WishListVO;
+import yourstay.md.mapper.MemberMapper;
 import yourstay.md.mapper.MyPageMapper;
 
 @Service
@@ -19,6 +21,9 @@ public class MyPageServiceImpl implements MyPageService {
 
 	@Autowired
 	SqlSession session;
+	
+	@Autowired
+	MemberMapper memberMapper;
 
 	/*
 	 * 회원의 찜정보뽑기
@@ -52,5 +57,4 @@ public class MyPageServiceImpl implements MyPageService {
 
 		return wishMap;
 	}
-
 }

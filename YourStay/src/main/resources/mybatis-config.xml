@@ -12,4 +12,8 @@
 		<typeAlias alias ="Reservation" type="yourstay.md.domain.Reservation"/>
 		<typeAlias alias ="ReservationDate" type="yourstay.md.domain.ReservationDate"/>
 	</typeAliases>
+	
+	<!-- <mappers>
+		<mapper resource="yourstay.md.mapper.MemberMapper.xml"/>
+	</mappers> -->
 </configuration>
