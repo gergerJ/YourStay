@@ -64,7 +64,6 @@ public class LoginController {
 //            session.setAttribute("memail", null);
 //            session.setAttribute("mpwd", null);
 //        }
-//        
 //        return mav;
 //    }
 	
@@ -90,7 +89,7 @@ public class LoginController {
 	   if(memberVo == null)
 	   {
 	    mapper.addUser(new MemberVO(-1, mname, memail, mpwd , mcallnum, -1));
-		   mav.setViewName("login/loginPage");
+		  mav.setViewName("login/loginPage");
 	      mav.addObject("msg","success");
 	      log.info("ddd");
 	      return mav;
@@ -111,10 +110,10 @@ public class LoginController {
 		ModelAndView mv = new ModelAndView();
 		//유효성 검사(클라이언트측 View:js, 서버측 Controller:java)
 		log.info("loginCon check //email: "+memail+", pwd: "+mpwd);
-		int result = mapper.login(memail, mpwd);
+		boolean result = mapper.login(memail, mpwd);
 		log.info("로그인 결과(1>성공) : " + result);		
 		
-		if(result == YES_ID_PWD) { //로그인 성공시
+		if(result == true) { //로그인 성공시
 			log.info("로그인 성공");	
 			MemberVO m = mapper.getUser(memail);
 			session = request.getSession();
@@ -128,8 +127,11 @@ public class LoginController {
 //	        new ModelAndView("info/info","resVO",resVO);
 		}else { // 로그인 실패시
 			log.info("로그인 실패");
-			mv.setViewName("login_check_module");
+			session.setAttribute("loginFail", "Fail");
+			mv.setViewName("/login/login_check_module");
 		}
 		return mv;
 	}
+	
+	
 }

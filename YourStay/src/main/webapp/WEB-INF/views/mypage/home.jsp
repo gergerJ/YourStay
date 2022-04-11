@@ -24,8 +24,19 @@ h2, h3,p {
   font-family: 'Poor Story', cursive!important;
   }
 </style>
+<script>
+	
+	/* $(document).ready(function(){
+		//게시판 수정버튼 
+		 $(".updateButton").on("click", function(){
+			$(location).attr("href", "/mypage/updateMember?memail=" + ${member.memail})
+		}) 
+	}); */
+</script>
 <body>
-    
+<form action="/mypage/removeUser.do" method="post" name="frm1">
+	<input type="hidden" name="memail" value = "${member.memail}">
+</form>
 <div class="container">
   <header class="blog-header py-3" style="margin-bottom: 3%;">
       <div class="row flex-nowrap justify-content-between align-items-center">
@@ -72,6 +83,7 @@ h2, h3,p {
       <th>Name</th>
       <th>Email</th>
       <th>Phone Number</th>
+      <th>Management</th>
     </tr>
   </thead>
   <tbody>
@@ -79,6 +91,10 @@ h2, h3,p {
       <td>${member.mname}</td>
       <td>${member.memail}</td>
       <td>${member.mcallnum}</td>
+      <td> 
+      		<a class="btn btn-secondary" type="submit" href="/mypage/updateUser?memail=${member.memail}" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;"> 정보수정</a>
+      		<a class="btn btn-secondary deletebtn" type="submit" href="/mypage/removeUser?memail=${member.memail}" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;"> 회원탈퇴</button>
+      </td>
     </tr>
   </tbody>
 </table>

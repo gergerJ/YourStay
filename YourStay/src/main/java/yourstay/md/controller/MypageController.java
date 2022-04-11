@@ -1,8 +1,10 @@
 package yourstay.md.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,8 +44,10 @@ import yourstay.md.service.RoomHistoryService;
 public class MypageController {
 	@Autowired
 	private AccommodationService accommodationService;
+//	@Autowired
+//	private MemberMapper memberMapper;
 	@Autowired
-	private MemberMapper memberMapper;
+	private MemberService memberService;
 	@Autowired
 	private MyPageService myPageService;
 	@Autowired
@@ -54,21 +59,37 @@ public class MypageController {
 	@GetMapping(value="/home")
     public ModelAndView gohome(HttpSession session){
         log.info("MypageController -> gohome 요청");
-        MemberVO vo = memberMapper.getUser((String)session.getAttribute("memail"));
+        MemberVO vo = memberService.getUser((String)session.getAttribute("memail"));
         ModelAndView mv = new ModelAndView("mypage/home","member",vo);
         return mv;
     }
 	@PostMapping(value="/register.do")
-	   public ModelAndView roomRegister(ModelAndView mv, resultVO registervo){
+	   public ModelAndView roomRegister(ModelAndView mv, HttpServletRequest request){
 	      log.info("roomOption Data -> info 전달");
+	      MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+	      log.info("##### request" + request);
+	      log.info("##### multipartRequest" + multipartRequest);
+		  //MultipartFile file = multipartRequest.getFile("ipath1");
+		  //log.info("file.getSize() : " + file.getSize());
+	      
+	      //todo : 파일이 없으면 if로직 추가 
+		  List<MultipartFile> files = new ArrayList<MultipartFile>();
+		  for(int i = 0; i<3;i++) {
+			  MultipartFile file = multipartRequest.getFile("ipath"+(i+1));
+			  files.add(file);
+		  }
+		  MultipartFile file1 = files.get(0);
+		  
+		  MultipartFile file = multipartRequest.getFile("ipath3");
+		  log.info("file.getSize() : " + file.getSize());
 //	      log.info("로그인한 회원의 번호: " + mseq);
-	      log.info("result aname: " + registervo.getAname());
+//	      log.info("result aname: " + registervo.getAname());
 //	      log.info("aname: " + aname);
 //	      accommodationService.inssertImageS(img);// 이미지 테이블에 insert
 //	      accommodationService.insertAccommodationS(ac, mpRequest);// 숙소  테이블에 insert
 //	      log.info("옵션번호: "+ aco.getAid() +", 숙소번호 : "+aco.getOid()+", 방개수 : "+aco.getRnum()+", TV유무 : "+ aco.getTv());
 	      //여기에  info페이지로 값을 전달 
-	      mv.setViewName("mypage/home");
+	      mv.setViewName("/mypage/home");
 	      return mv;
 	   }
 	
@@ -127,4 +148,57 @@ public class MypageController {
 	   ModelAndView mv = new ModelAndView("room/roomRegister","vo",vo);
        return mv;
    }
+   
+   @GetMapping("updateUser")
+	public ModelAndView findMember(ModelAndView mv, String memail) {
+		log.info("updateUser -> updateUser 페이지 이동 ");
+		log.info("memail: "+ memail);
+		MemberVO findMember = memberService.getUser(memail);
+		log.info("mcallnum : " + findMember.getMcallnum());
+		mv.addObject("findMember", findMember);
+		mv.setViewName("/mypage/updatePage");
+		return mv;
+	}
+	@PostMapping("updateUser.do")
+	public ModelAndView updateMember(ModelAndView mv, long mseq, String mname, String memail, String mpwd, int mcallnum) {
+        MemberVO member = new MemberVO(mseq, mname, memail, mpwd, mcallnum, 0);
+
+		log.info("mseq getMseq 값 : " + member.getMseq()); // 여기까지 됨! 
+		log.info("mseq getMname 값 : " + member.getMname());
+		log.info("mseq getMemail 값 : " + member.getMemail());
+		log.info("mseq getMpwd 값 : " + member.getMpwd());
+		log.info("mseq getMcallnum 값 : " + member.getMcallnum());
+		
+		log.info("####memberVO : " + member);
+	
+		int updateResult = memberService.updateUser(member);
+		log.info("11111111111111");
+		if(updateResult>0) {
+			log.info("Member Update 성공");
+		}else {
+			log.info("Member Update 실패");
+		}
+		mv.setViewName("redirect:/mypage/home");
+		return mv;
+	}
+	@GetMapping("removeUser")
+	public ModelAndView findRemoveUser(ModelAndView mv, String memail) {
+		MemberVO findMember = memberService.getUser(memail);
+		mv.addObject("findMember", findMember);
+		mv.setViewName("/mypage/removePage");
+		return mv;
+	}
+	
+	@PostMapping("removeUser.do")
+	public ModelAndView removeUser(ModelAndView mv, String memail, HttpSession session) {
+		int result = memberService.removeUser(memail);
+		if(result>0) {
+			log.info("## Controller removeUser 성공!!");
+			session.invalidate();
+		}else {
+			log.info("## Controller removeUser 실패!!");
+		}
+		mv.setViewName("redirect: /");
+		return mv;
+	}
 }

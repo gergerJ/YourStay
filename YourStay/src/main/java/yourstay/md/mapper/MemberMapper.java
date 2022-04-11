@@ -9,8 +9,9 @@ public interface MemberMapper {
 	public MemberVO getUser(String memail);
 	public List<MemberVO> getUserList();
 	public int addUser(MemberVO user);
+	public int updateUser(MemberVO member);
 	public int removeUser(String memail);
 	
 	// Functional Methods
-	public int login(String memail, String mpwd);
+	public boolean login(String memail, String mpwd);
 }
