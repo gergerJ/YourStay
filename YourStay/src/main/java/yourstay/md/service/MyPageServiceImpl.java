@@ -8,12 +8,16 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jdk.internal.jline.internal.Log;
+import lombok.extern.log4j.Log4j;
 import yourstay.md.domain.Accommodation;
 import yourstay.md.domain.MemberVO;
 import yourstay.md.domain.WishListVO;
+import yourstay.md.domain.reviewVO;
 import yourstay.md.mapper.MemberMapper;
 import yourstay.md.mapper.MyPageMapper;
 
+@Log4j
 @Service
 public class MyPageServiceImpl implements MyPageService {
 	@Autowired
@@ -30,7 +34,7 @@ public class MyPageServiceImpl implements MyPageService {
 	 */
 	@Override
 	public List<WishListVO> getWishAidS(long mseq) {
-		return session.selectList("yourstay.md.mapper.getWishAid", mseq);
+		return session.selectList("yourstay.md.mapper.MyPageMapper.getWishAid", mseq);
 	}
 
 	/*
@@ -38,9 +42,22 @@ public class MyPageServiceImpl implements MyPageService {
 	 */
 	@Override
 	public List<Accommodation> getWishListS(List<WishListVO> wishlist) {
-		return session.selectList("yourstay.md.mapper.getWishList", wishlist);
+		return session.selectList("yourstay.md.mapper.MyPageMapper.getWishList", wishlist);
 	}
-
+	
+	/*
+	 * 회원이 찜한 숙박업체 등록
+	 */
+	@Override
+	public int addWishListS(reviewVO reviewvo) {
+		int result = session.insert("yourstay.md.mapper.MyPageMapper.addWish", reviewvo);
+		if(result>0) {
+			log.info("MyPageService addWishListS 회원등록 성공");
+		}else {
+			log.info("MyPageService addWishListS 회원등록 실패");
+		}
+		return result;
+	}
 	@Override
 	public Map<String, List> getWishS(long mseq) {
 		Map<String, List> wishMap = new HashMap<String, List>();

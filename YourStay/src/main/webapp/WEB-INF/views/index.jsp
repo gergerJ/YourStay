@@ -128,27 +128,27 @@
                      <path d="M21 21l-5.2-5.2" /></svg>
                </a> 
                <c:choose>
-         <c:when test="${msg =='failure'}">
-        <a class="btn btn-secondary" href="../login/loginPage" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Sign up</a>
-        </c:when> 
-         <c:when test="${msg == null}"> <!-- 로그인X -->
-         
-         <% 
-            if(memail == null){
-         %>
-           <a class="btn btn-secondary" href="../login/loginPage" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Sign up</a>
-          <%
-            }else{
-         %>
-         <a style="margin-top: 3%; margin-right: 3%;" href="/mypage/home"><%=memail %>님 반갑습니다!</a>
-         <a href="../login/logout.do" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">로그아웃</a>
-         <%} %>
-         </c:when> 
-         <c:otherwise>
-         <a style="margin-top: 3%; margin-right: 3%;" href="/mypage/home"><%=memail%>님 반갑습니다!</a>
-         <a href="../login/logout.do" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">로그아웃</a>
-         </c:otherwise>
-         </c:choose>
+			        <c:when test="${msg =='failure'}">
+			        <a class="btn btn-secondary" href="../login/loginPage" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Sign up</a>
+			        </c:when> 
+			         <c:when test="${msg == null}"> <!-- 로그인X -->
+			         
+			         <% 
+			            if(memail == null){
+			         %>
+			           <a class="btn btn-secondary" href="../login/loginPage" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">Sign up</a>
+			          <%
+			            }else{
+			         %>
+			         <a style="margin-top: 3%; margin-right: 3%;" href="/mypage/home"><%=memail %>님 반갑습니다!</a>
+			         <a href="../login/logout.do" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">로그아웃</a>
+			         <%} %>
+			         </c:when> 
+			         <c:otherwise>
+			         <a style="margin-top: 3%; margin-right: 3%;" href="/mypage/home"><%=memail%>님 반갑습니다!</a>
+			         <a href="../login/logout.do" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">로그아웃</a>
+			         </c:otherwise>
+		         </c:choose>
             </div>
          </div>
       </header>

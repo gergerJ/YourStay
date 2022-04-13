@@ -14,4 +14,7 @@
 			#{item.aid}
 		</foreach>
 	</select>
+	<insert id="addWish" parameterType="yourstay.md.domain.reviewVO">
+		INSERT INTO wishlist VALUES(wishlist_seq.nextval, #{mseq}, #{aid})
+	</insert>
 </mapper>

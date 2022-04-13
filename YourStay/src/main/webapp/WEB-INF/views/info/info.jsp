@@ -88,7 +88,7 @@
 	            url: "/mypage/wishlist/addwish",
 	            type: "POST",
 	            /* cache: "false", */
-	            data: {aid : $("#aid").val() , mseq : $("#mseq").val()},
+	            data: {aid : $("#aid").val()},
 	            success: function(data){
 	               alert("찜 되었습니다");
 	            },
@@ -1537,7 +1537,7 @@ body, h1, h2, h3 {
                               value="${resVO.rend}">
                            <!-- 히든 value -->
                            <input type="hidden" value="${resVO.aid}" name="aid" id="aid">
-                           <input type="hidden" value="${resVO.mseq}" name="mseq" id="mseq">
+                           <%-- <input type="hidden" value="${resVO.mseq}" name="mseq" id="mseq"> --%>
                            <div class="products">
                               <h3 class="title">금액</h3>
                               <div class="item">

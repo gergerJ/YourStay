@@ -204,15 +204,15 @@ public class MypageController {
 	
 	//찜하기 부분 추가 TEst
 	@PostMapping(value="/wishlist/addwish")
-	public ModelAndView addWish(HttpSession session, @RequestParam long aid, @RequestParam long mseq) {
-       log.info("aid : " + aid+ "// mseq:" + mseq);
-       session.setAttribute("aid", aid);
+	public ModelAndView addWish(HttpSession session, @RequestParam long aid) {
+       log.info("aid : " + aid);
        List<reviewVO> vo = reviewMapper.getUser((String) session.getAttribute("memail"));
-       log.info("mseq"+ mseq);
+       log.info("vo.get(0) : "+ vo.get(0));
        log.info("####vo:"+vo);
        
        reviewVO reviewvo = vo.get(0);
        reviewvo.setAid(aid);
+       log.info("####vo:"+vo);
        ModelAndView mv = new ModelAndView("mypage/wishlist","wish",reviewvo);
        return mv;
     }
