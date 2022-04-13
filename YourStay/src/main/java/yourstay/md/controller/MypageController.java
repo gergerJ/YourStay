@@ -201,4 +201,18 @@ public class MypageController {
 		mv.setViewName("redirect: /");
 		return mv;
 	}
+	
+	@PostMapping(value="/wishlist/addwish")
+	public ModelAndView addWish(HttpSession session, @RequestParam long aid, @RequestParam long mseq) {
+       log.info("aid : " + aid+ "// mseq:" + mseq);
+       session.setAttribute("aid", aid);
+       List<reviewVO> vo = reviewMapper.getUser((String) session.getAttribute("memail"));
+       log.info("mseq"+ mseq);
+       log.info("####vo:"+vo);
+       
+       reviewVO reviewvo = vo.get(0);
+       reviewvo.setAid(aid);
+       ModelAndView mv = new ModelAndView("mypage/wishlist","wish",reviewvo);
+       return mv;
+    }
 }
