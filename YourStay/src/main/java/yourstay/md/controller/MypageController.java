@@ -202,7 +202,7 @@ public class MypageController {
 		return mv;
 	}
 	
-	//찜하기 부분 추가 
+	//찜하기 부분 추가 TEst
 	@PostMapping(value="/wishlist/addwish")
 	public ModelAndView addWish(HttpSession session, @RequestParam long aid, @RequestParam long mseq) {
        log.info("aid : " + aid+ "// mseq:" + mseq);
