@@ -49,8 +49,12 @@ public class MyPageServiceImpl implements MyPageService {
 	 * 회원이 찜한 숙박업체 등록
 	 */
 	@Override
-	public int addWishListS(reviewVO reviewvo) {
-		int result = session.insert("yourstay.md.mapper.MyPageMapper.addWish", reviewvo);
+	public int addWishListS(WishListVO wishListvo) {
+		//int result = session.insert("yourstay.md.mapper.MyPageMapper.addWish", reviewvo);
+		log.error("#########MyPageServiceImpl addWishListS: "+wishListvo);
+		
+		log.info("service  - addWishList 완료");
+		int result = myPageMapper.addWishList(wishListvo);
 		if(result>0) {
 			log.info("MyPageService addWishListS 회원등록 성공");
 		}else {
@@ -73,5 +77,28 @@ public class MyPageServiceImpl implements MyPageService {
 		wishMap.put("accommoList", accommoList);
 
 		return wishMap;
+	}
+	/*
+	 * 회원이 선택한 찜 리스트 한가지 선택하기 ! 
+	 */
+	@Override
+	public boolean findWishListS(WishListVO wishListvo) {
+		log.info("MyPageServiceImpl findWishList 찾기 성공! ");
+		String result = myPageMapper.findWishList(wishListvo);
+		return Boolean.parseBoolean(result);
+	}
+	/*
+	* 회원이 찜한 List 찾기(선택하기)
+	*/
+	@Override
+	public int deleteWishListS(WishListVO wishListvo) {
+		log.info("MyPageServiceImpl deleteWishList 이동 ! ");
+		int result = myPageMapper.deleteWishList(wishListvo);
+		if(result>0) {
+			log.info("MyPageServiceImpl deleteWishList 삭제 성공");
+		}else{
+			log.info("MyPageServiceImpl deleteWishList 삭제 실패");
+		}
+		return result;
 	}
 }

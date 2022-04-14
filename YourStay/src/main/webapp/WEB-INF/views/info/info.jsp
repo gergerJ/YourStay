@@ -88,9 +88,15 @@
 	            url: "/mypage/wishlist/addwish",
 	            type: "POST",
 	            /* cache: "false", */
-	            data: {aid : $("#aid").val()},
+	            data: {aid : $("#aid").val(), mseq : $("#mseq").val()},
 	            success: function(data){
-	               alert("찜 되었습니다");
+	            	if(data.trim()=='deleteWishList'){
+	            		alert("찜 취소 되었습니다.");
+	            		$('.wish').css({"color": "black"});
+	            	}else{
+	            		$('.wish').css({"color": "pink"});
+	            		alert("찜 등록 되었습니다.");
+	            	}
 	            },
 	            error : function (data) {
 	                alert('죄송!');
@@ -1537,7 +1543,7 @@ body, h1, h2, h3 {
                               value="${resVO.rend}">
                            <!-- 히든 value -->
                            <input type="hidden" value="${resVO.aid}" name="aid" id="aid">
-                           <%-- <input type="hidden" value="${resVO.mseq}" name="mseq" id="mseq"> --%>
+                           <input type="hidden" value="${loginOkUser.mseq}" name="mseq" id="mseq">
                            <div class="products">
                               <h3 class="title">금액</h3>
                               <div class="item">
