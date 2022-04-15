@@ -28,6 +28,7 @@ import yourstay.md.domain.Accomoption;
 import yourstay.md.domain.Image;
 import yourstay.md.domain.MemberVO;
 import yourstay.md.domain.Reservation;
+import yourstay.md.domain.WishListVO;
 import yourstay.md.domain.resultVO;
 import yourstay.md.domain.reviewVO;
 import yourstay.md.mapper.MemberMapper;
@@ -38,7 +39,7 @@ import yourstay.md.service.MyPageService;
 import yourstay.md.service.RoomHistoryService;
 
 @Log4j
-@AllArgsConstructor
+//@AllArgsConstructor
 @Controller
 @RequestMapping("/mypage")
 public class MypageController {
@@ -54,6 +55,8 @@ public class MypageController {
 	private ReviewMapper reviewMapper;
 	@Autowired
 	private RoomHistoryService roomService;
+	@Autowired(required = false)
+	private WishListVO wishListvo;
 	
 	
 	@GetMapping(value="/home")
@@ -201,4 +204,23 @@ public class MypageController {
 		mv.setViewName("redirect: /");
 		return mv;
 	}
+
+	/*
+	 * 찜하기 부분 추가 TEst
+	 */	
+	@ResponseBody
+	@PostMapping(value="/wishlist/addwish")
+	public String addWishList(HttpSession session, WishListVO wishlistvo) {
+       log.info("!@@@@@@@@@wishlistvo : " + wishlistvo);
+       boolean findResult = myPageService.findWishListS(wishlistvo);
+       if(findResult) {
+    	   myPageService.deleteWishListS(wishlistvo);
+    	   log.info("## Controller deleteWishList 삭제 성공!!!!!!!!!!!!");
+    	   return "deleteWishList";
+       }else {
+    	   myPageService.addWishListS(wishlistvo);
+           log.info("## Controller wishlist 등록 성공");
+           return "addWishListS";
+       }
+    }
 }

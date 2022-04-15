@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class reviewVO {
+	//wishlist
+	private long wid;
 	//review
 	private long renum;
 	private long aid;
