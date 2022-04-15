@@ -82,7 +82,7 @@
       }
    });
    
-   $(function(){
+   $(function(){//
 	      $(".wish").on("click", function(){
 	         $.ajax({ 
 	            url: "/mypage/wishlist/addwish",
