@@ -20,23 +20,13 @@
 %>
 </head>
 <style>
-h2, h3,p {
+h2, h3,p, body {
   font-family: 'Poor Story', cursive!important;
+   font-size: 112%;
   }
 </style>
-<script>
-	
-	/* $(document).ready(function(){
-		//게시판 수정버튼 
-		 $(".updateButton").on("click", function(){
-			$(location).attr("href", "/mypage/updateMember?memail=" + ${member.memail})
-		}) 
-	}); */
-</script>
 <body>
-<form action="/mypage/removeUser.do" method="post" name="frm1">
-	<input type="hidden" name="memail" value = "${member.memail}">
-</form>
+    
 <div class="container">
   <header class="blog-header py-3" style="margin-bottom: 3%;">
       <div class="row flex-nowrap justify-content-between align-items-center">
@@ -91,6 +81,7 @@ h2, h3,p {
       <td>${member.mname}</td>
       <td>${member.memail}</td>
       <td>${member.mcallnum}</td>
+      
       <td> 
       		<a class="btn btn-secondary" type="submit" href="/mypage/updateUser?memail=${member.memail}" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;"> 정보수정</a>
       		<a class="btn btn-secondary deletebtn" type="submit" href="/mypage/removeUser?memail=${member.memail}" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;"> 회원탈퇴</button>
@@ -100,7 +91,8 @@ h2, h3,p {
 </table>
 <div class="container px-4 py-5" id="featured-3">
 <h3>바로 가기</h3><a class="btn btn-secondary" type="submit" href="roomRegister?mseq=${member.mseq}" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">숙소 등록 하러 가기</a>
-
+	<a class="btn btn-secondary" type="submit" href="myRoom?mseq=${member.mseq}" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">내가 등록한 숙소 보러 가기</a>
+	<a class="btn btn-secondary" type="submit" href="goReservationList?mseq=${member.mseq}" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">내  숙소 예약한 목록 보러 가기</a>
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
       <div class="feature col">
           <img class="bi" id="like" width="63em" height="63em" src="../images/like.png"/>
@@ -124,12 +116,19 @@ h2, h3,p {
     </div>
   </div>
 </main>
-<footer class="blog-footer">
-  <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-  <p>
-    <a href="#">Back to top</a>
-  </p>
-</footer>
+      <footer class="py-3 my-4" style="margin-top: 0%!important;">
+         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a href="/"
+               class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
+               class="nav-link px-2 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="/Projectreview"
+               class="nav-link px-2 text-muted">About</a></li>
+         </ul>
+         <p class="text-center text-muted">© 2021 Company, Inc</p>
+      </footer>
     
   </body>
 </html>

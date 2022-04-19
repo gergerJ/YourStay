@@ -7,10 +7,10 @@
 	<select id="getUser" resultType="yourstay.md.domain.MemberVO">
 		select * from member where memail=#{memail}
 	</select>
-	<select id="getUsers" resultType="yourstay.md.domain.MemberVO">
+	<select id="getUserList" resultType="yourstay.md.domain.MemberVO">
 		select * from member
 	</select>
-	<insert id="insertUser"
+	<insert id="addUser"
 		parameterType="yourstay.md.domain.MemberVO">
 		insert into member values(member_seq.nextval, #{mname}, #{memail}, #{mpwd},
 		#{mcallnum}, 0)
@@ -18,13 +18,13 @@
 	<delete id="deleteUser">
 		delete from member where memail=#{memail}
 	</delete>
-	<select id="loginUser" parameterType="hashmap"
-		resultType="yourstay.md.domain.MemberVO">
-		select * from member where memail=#{memail} and mpwd=#{mpwd}
-	</select>
 	<update id="updateUser" parameterType="yourstay.md.domain.MemberVO">
 		update member set mpwd=#{mpwd}, mcallnum=#{mcallnum} where mseq=#{mseq}
 	</update>
+	<select id="login" parameterType="yourstay.md.domain.MemberVO"
+		resultType="yourstay.md.domain.MemberVO">
+		select * from member where memail=#{memail}
+	</select>
 </mapper>
 <!-- resultType : 결과반환 Object / return 값이라고 생각하면 될 듯? parameterType : 조회결과 
 	Object -->

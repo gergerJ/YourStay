@@ -18,9 +18,9 @@ import yourstay.md.domain.reviewVO;
 
 @Component("fileUtils")
 public class FileUtils {
-	public static final String FILE_STORE="C:/git/YourStay/src/main/webapp/resources/images/reviewImg/";
+	public static final String FILE_STORE="C:/HOO/Git/YourStay/src/main/webapp/resources/images/reviewimg/";
 	
-	//작성자별로 폴더 생성 하기 위한 메소드
+	//�ۼ��ں��� ���� ���� �ϱ� ���� �޼ҵ�
 	public static String writerPath(reviewVO reviewVO) { 
 		final String FILE_FINAL_PATH = FILE_STORE+reviewVO.getRenum()+"/";
 		return FILE_FINAL_PATH;
@@ -67,7 +67,7 @@ public class FileUtils {
 		return list;
 	}
 	
-	public static String getRandomString() {//32글자의 랜덤한 문자열(숫자포함)을 만들어서 반환해주는 기능
+	public static String getRandomString() {//32������ ������ ���ڿ�(��������)�� ���� ��ȯ���ִ� ���
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
 }

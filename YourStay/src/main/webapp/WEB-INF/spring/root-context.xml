@@ -29,9 +29,7 @@
 			<list>
 				<value>classpath:yourstay/md/mapper/MemberMapper.xml</value>
 				<value>classpath:yourstay/md/mapper/SearchMapper.xml</value>
-				<value>classpath:yourstay/md/mapper/reservedDateMapper.xml</value>
-				<value>classpath:yourstay/md/mapper/AccommodationMapper.xml</value>
-				<value>classpath:yourstay/md/mapper/MyPageMapper.xml</value>
+				<value>classpath:yourstay/md/mapper/ReviewMapper.xml</value>
 				<value>classpath:yourstay/md/mapper/RoomHistoryMapper.xml</value>
 			</list>
 		</property>
@@ -41,11 +39,6 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory"></constructor-arg>
 	</bean>
-	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="100000000" />
-        <property name="maxInMemorySize" value="100000000" />
-    </bean>
 	
 	<!-- component scanning 설정 -->	
 	<context:component-scan base-package="yourstay.md">

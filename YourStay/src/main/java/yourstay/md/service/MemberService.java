@@ -5,10 +5,12 @@ import java.util.List;
 import yourstay.md.domain.MemberVO;
 
 public interface MemberService {
-	//CRUD 기능 
-	List<MemberVO> getUserList(MemberVO member);
-	MemberVO getUser(String memail);
-	int addUser(MemberVO user);
-	int updateUser(MemberVO member);
-	int removeUser(String memail);
+	// CRUDs
+		public MemberVO getUser(String memail);
+		public List<MemberVO> getUserList();
+		int updateUser(MemberVO member);
+		int removeUser(String memail);
+		
+		// Functional Methods
+		public int login(String memail, String mpwd);
 }

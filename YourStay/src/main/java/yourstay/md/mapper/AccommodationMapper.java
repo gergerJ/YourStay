@@ -1,24 +1,43 @@
 package yourstay.md.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import yourstay.md.domain.Accommodation;
+import yourstay.md.domain.Image;
 import yourstay.md.domain.MemberVO;
+import yourstay.md.domain.roomRegisterVO;
 
 public interface AccommodationMapper {
 
    /*
-    * ìˆ™ì†Œ í…Œì´ë¸”ì— ë“±ë¡
+    * ¼÷¼Ò Å×ÀÌºí¿¡ µî·Ï
     */
-   public void insert(Accommodation ac);
+   public void insertAccom(roomRegisterVO roomregisterVo);
    
-
+   public void insertOption(roomRegisterVO roomregisterVo);
+   public void insertUtil(roomRegisterVO roomregisterVo);
    /*
-    * ì´ë¯¸ì§€ í…Œì´ë¸” ë“±ë¡
+    * ÀÌ¹ÌÁö Å×ÀÌºí µî·Ï
     */
    public void insertFile(Map<String, Object> map) throws Exception;
    /*
-    * ë“±ë¡í•˜ëŠ” íšŒì›ë²ˆí˜¸ ê°€ì ¸ì˜¤ê¸°
+    * ¼÷¼Ò Å×ÀÌºí ¼öÁ¤
+    */
+   public void updateAccom(roomRegisterVO roomregisterVo);
+   
+   
+   public void updateOption(roomRegisterVO roomregisterVo);
+   public void updateUtil(roomRegisterVO roomregisterVo);
+   public void updateFile(Map<String, Object> map) throws Exception;
+
+   public void requestDelete(long aid);
+   /*
+    * µî·ÏÇÏ´Â È¸¿ø¹øÈ£ °¡Á®¿À±â
     */
    public MemberVO getRegisterMemberSeq(long mseq);
+   /*
+    * ¼÷¼ÒÀÌ¹ÌÁö ºÒ·¯¿À±â
+    */
+   public List<Image> selectRoomImage(long aid);
 }

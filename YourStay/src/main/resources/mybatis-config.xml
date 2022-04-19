@@ -4,16 +4,5 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias ="MemberVO" type="yourstay.md.domain.MemberVO"/>
-		<typeAlias alias ="Accomoption" type="yourstay.md.domain.Accomoption"/>
-		<typeAlias alias ="Image" type="yourstay.md.domain.Image"/>
-		<typeAlias alias ="resultVO" type="yourstay.md.domain.resultVO"/>
-		<typeAlias alias ="WishListVO" type="yourstay.md.domain.WishListVO"/>
-		<typeAlias alias ="Accommodation" type="yourstay.md.domain.Accommodation"/>
-		<typeAlias alias ="Reservation" type="yourstay.md.domain.Reservation"/>
-		<typeAlias alias ="ReservationDate" type="yourstay.md.domain.ReservationDate"/>
 	</typeAliases>
-	
-	<!-- <mappers>
-		<mapper resource="yourstay.md.mapper.MemberMapper.xml"/>
-	</mappers> -->
 </configuration>

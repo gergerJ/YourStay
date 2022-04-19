@@ -8,8 +8,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap core CSS -->
-<link href="../css/bootstrap.min.css" rel="stylesheet">
-<link href="../css/blog.css" rel="stylesheet"> 
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/blog.css" rel="stylesheet"> 
+<!-- 구글웹폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+   href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
+   rel="stylesheet">
+<script type="text/javascript" language="javascript" 
+  src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<style>
+	body{
+		font-family: 'Poor Story', cursive;
+	}
+</style>
 <%
    String memail = (String) session.getAttribute("memail");
 %>  
@@ -53,52 +66,44 @@
     </div>
   </header>
 
-<main>
   <div class="album py-5 bg-light">
     <div class="container">
-    
+   	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" >
     <c:set value="${wishMap.wishlist}" var="wishlist"/>
 	<c:set value="${wishMap.accommoList}" var="accommolist"/>
-
 	<c:forEach items="${accommolist}" var="vo" varStatus="status">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <div class="col">
           <div class="card shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" >
             <image class="cover" href="/resources/images/reservation30.jpg"/>
             </svg>
             <div class="card-body">
-              <p class="card-text">${vo.aname}</p>
+              <p class="card-text">숙소 이름: ${vo.aname}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" style="padding: 5px 30px;">View</button>
+                  <a href="../../roomDetailInfo?aid=${vo.aid}" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">View</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </c:forEach>
-        
-        
+        </c:forEach>
+        </div>       
       </div>
     </div>
-  </div>
 
-</main>
 
 <!-- 푸터 -->
    <div class="container">
       <footer class="py-3 my-4">
          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/"
                class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Pricing</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
                class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/Projectreview"
                class="nav-link px-2 text-muted">About</a></li>
          </ul>
          <p class="text-center text-muted">© 2021 Company, Inc</p>

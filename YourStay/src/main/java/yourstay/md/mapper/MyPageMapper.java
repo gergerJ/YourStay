@@ -11,23 +11,23 @@ import yourstay.md.domain.reviewVO;
 //@Mapper
 public interface MyPageMapper {
 	/*
-	 * íšŒì›ì˜ ì°œì •ë³´ë½‘ê¸°
+	 * È¸¿øÀÇ ÂòÁ¤º¸»Ì±â
 	 */
 	public List<WishListVO> getWishAid(long mseq);
 	/*
-	 * íšŒì›ì´ ì°œí•œ ìˆ™ë°•ì—…ì²´ ë¦¬ìŠ¤íŠ¸
+	 * È¸¿øÀÌ ÂòÇÑ ¼÷¹Ú¾÷Ã¼ ¸®½ºÆ®
 	 */
 	public List<Accommodation> getWishList(List<WishListVO> wishlist);
 	/*
-	 * íšŒì›ì´ ì°œí•œ ìˆ™ë°•ì—…ì²´ ë“±ë¡
+	 * È¸¿øÀÌ ÂòÇÑ ¼÷¹Ú¾÷Ã¼ µî·Ï
 	 */
 	public int addWishList(WishListVO wishListvo);
 	/*
-	 * íšŒì›ì´ ì°œí•œ ìˆ™ë°•ì—…ì²´ ë“±ë¡ë˜ì—ˆëŠ”ì§€ ê²€ì¦! 
+	 * È¸¿øÀÌ ÂòÇÑ ¼÷¹Ú¾÷Ã¼ µî·ÏµÇ¾ú´ÂÁö °ËÁõ! 
 	 */
 	public String findWishList(WishListVO wishListvo);
 	/*
-	 * íšŒì›ì´ ì°œí•œ ìˆ™ë°•ì—…ì²´ ì‚­ì œ
+	 * È¸¿øÀÌ ÂòÇÑ ¼÷¹Ú¾÷Ã¼ »èÁ¦
 	 */
 	public int deleteWishList(WishListVO wishListvo);
 }

@@ -81,8 +81,7 @@
          return date;
       }
    });
-   
-   $(function(){//
+      $(function(){//
 	      $(".wish").on("click", function(){
 	         $.ajax({ 
 	            url: "/mypage/wishlist/addwish",
@@ -230,6 +229,12 @@ body, h1, h2, h3 {
 .info .link {
    color: #5085BB;
 }
+
+.like{
+	padding: 0;
+	border: none;
+	background: none;
+}
 </style>
 <%
    String memail = (String) session.getAttribute("memail");
@@ -263,7 +268,7 @@ body, h1, h2, h3 {
                <c:otherwise>
                   <div>
                      <a id="fontline" class="py-2 nav-link active"
-                        style="color: green; texg-align: center" href="/mypage/home">${loginOkUser.memail}
+                        style="color: green; texg-align: center" href="/mypage/home"><%=memail%>
                         님 환영합니다</a>
                   </div>
                   <li class="nav-item"><a class="py-2 nav-link active"
@@ -305,7 +310,8 @@ body, h1, h2, h3 {
          </div>
          <div class="carousel-inner">
             <div class="carousel-item active"
-               style="background-image: url('https://source.unsplash.com/LAaSoL0LrYs/1920x1080')">
+               style="background:url('../../../resources/images/roomImg/${resVO.aid}/${resVO.ipath1}') no-repeat; background-position: center;
+  background-size: cover;">
                <div class="carousel-caption">
                   <h5>First slide label</h5>
                   <p>Some representative placeholder content for the first
@@ -313,7 +319,8 @@ body, h1, h2, h3 {
                </div>
             </div>
             <div class="carousel-item"
-               style="background-image: url('https://source.unsplash.com/bF2vsubyHcQ/1920x1080')">
+               style="background:url('../../../resources/images/roomImg/${resVO.aid}/${resVO.ipath2}') no-repeat;background-position: center;
+  background-size: cover;">
                <div class="carousel-caption">
                   <h5>Second slide label</h5>
                   <p>Some representative placeholder content for the second
@@ -321,7 +328,8 @@ body, h1, h2, h3 {
                </div>
             </div>
             <div class="carousel-item"
-               style="background-image: url('https://source.unsplash.com/szFUQoyvrxM/1920x1080')">
+               style="background:url('../../../resources/images/roomImg/${resVO.aid}/${resVO.ipath3}') no-repeat;background-position: center;
+  background-size: cover;">
                <div class="carousel-caption">
                   <h5>Third slide label</h5>
                   <p>Some representative placeholder content for the third
@@ -534,69 +542,79 @@ body, h1, h2, h3 {
                <hr>
                <!-- 지도 -->
                <h2 class="fw-bold">위치</h2>
-               <div class="map-area">
+                  <div class="map-area">
                   <div id="map" style="height: 580px;"></div>
-                  <script type="text/javascript"
-                     src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b87f2182c111fec7ca0b3a2aaede2356"></script>
-                  <!-- services와 clusterer, drawing 라이브러리 불러오기 -->
+                   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b87f2182c111fec7ca0b3a2aaede2356&libraries=services,clusterer,drawing">
+</script>
                   <script>
-                     var ax = '<c:out value="${resVO.ax}"/>';
-                     var ay = '<c:out value="${resVO.ay}"/>';
-                     var mapContainer = document.getElementById('map'), // 지도의 중심좌표
-                     mapOption = {
-                        center : new kakao.maps.LatLng(ax, ay), // 처음 지도가 만들어지는 위치 = 지도의 중심좌표
-                        level : 3
-                     // 지도의 확대 레벨
-                     };
 
-                     var map = new kakao.maps.Map(mapContainer,
-                           mapOption); // 지도를 생성합니다
+      var container = document.getElementById('map');
+      var options = {
+         center: new kakao.maps.LatLng(33.450701, 126.570667),
+         level: 6
+      };
 
-                     // 지도에 마커를 표시합니다 
-                     var marker = new kakao.maps.Marker({
-                        map : map,
-                        position : new kakao.maps.LatLng(ax, ay)
-                     // 지도 위에 생기는 마커의 좌표 = 각 숙소별 좌표
-                     });
+      var map = new kakao.maps.Map(container, options);
+      
+      // 주소-좌표 변환 객체를 생성합니다
+      var geocoder = new kakao.maps.services.Geocoder();
+      // 주소로 좌표를 검색합니다
+      geocoder.addressSearch('${resVO.amap}', function(result, status) {
+            
+          // 정상적으로 검색이 완료됐으면 
+           if (status === kakao.maps.services.Status.OK) {
 
-                     // 커스텀 오버레이에 표시할 컨텐츠 입니다
-                     // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-                     // 별도의 이벤트 메소드를 제공하지 않습니다 
-                     var content = '<div class="wrap">'
-                           + '    <div class="info">'
-                           + '        <div class="title">'
-                           + '            ${resVO.aname}'
-                           + '            <div class="close" onclick="closeOverlay()" title="닫기"></div>'
-                           + '        </div>'
-                           + '        <div class="body">'
-                           + '            <div class="img">'
-                           + '                <img src="https://cfile181.uf.daum.net/image/250649365602043421936D" width="73" height="70">'
-                           + '           </div>'
-                           + '            <div class="desc">'
-                           + '                <div class="ellipsis">숙소 도로명 주소</div>'
-                           + '                <div><a href="https://map.kakao.com/link/to/숙소이름,ax,ay" target="_blank" class="link">길찾기</a></div>'
-                           + '            </div>' + '        </div>'
-                           + '    </div>' + '</div>';
+              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-                     // 마커 위에 커스텀오버레이를 표시합니다
-                     // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-                     var overlay = new kakao.maps.CustomOverlay({
-                        content : content,
-                        map : map,
-                        position : marker.getPosition()
-                     });
+              // 결과값으로 받은 위치를 마커로 표시합니다
+              var marker = new kakao.maps.Marker({
+                  map: map,
+                  position: coords
+              });
 
-                     // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-                     kakao.maps.event.addListener(marker, 'click',
-                           function() {
-                              overlay.setMap(map);
-                           });
-
-                     // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
-                     function closeOverlay() {
-                        overlay.setMap(null);
-                     }
-                  </script>
+              // 커스텀 오버레이에 표시할 컨텐츠 입니다
+              // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+              // 별도의 이벤트 메소드를 제공하지 않습니다 
+              var content = '<div class="wrap">' + 
+                          '    <div class="info">' + 
+                          '        <div class="title">' + 
+                          '            ${resVO.aname}' + 
+                          '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+                          '        </div>' + 
+                          '        <div class="body">' + 
+                          '            <div class="img">' +
+                          '                <img src="../../resources/images/logo.png" width="73" height="70">' +
+                          '           </div>' + 
+                          '            <div class="desc">' + 
+                          '                <div class="ellipsis">${resVO.amap}</div>' + 
+                          '                <div><a href="https://map.kakao.com/link/to/${maps.aname},${maps.amap}" target="_blank" class="link">길찾기</a>' + 
+                          '            </div>' + 
+                          '        </div>' + 
+                          '    </div>' +    
+                          '</div>';
+   
+              // 마커 위에 커스텀오버레이를 표시합니다
+              // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+              var overlay = new kakao.maps.CustomOverlay({
+                  content: content,
+                  map: map,
+                  position: marker.getPosition()       
+              });
+   
+              // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+              kakao.maps.event.addListener(marker, 'click', function() {
+                  overlay.setMap(map);
+              });
+   
+              // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
+              function closeOverlay() {
+                  overlay.setMap(null);     
+              }
+              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+              map.setCenter(coords);
+          } 
+      });    
+      </script>
                </div>
                <hr>
                <!-- 후기게시판 -->
@@ -1378,7 +1396,6 @@ body, h1, h2, h3 {
                                     href="#"><i class="icofont-ui-rating icofont-2x active"></i></a>
                                     <a href="#"><i class="icofont-ui-rating icofont-2x"></i></a>
                                  </span>
-                                 <h5 class="mb-0 pt-1">Rate this Place</h5>
                               </div>
                               <div
                                  class="bg-white rounded shadow-sm p-4 mb-4 clearfix graph-star-rating">
@@ -1390,7 +1407,7 @@ body, h1, h2, h3 {
                                           href="#"><i class="icofont-ui-rating active"></i></a> <a
                                           href="#"><i class="icofont-ui-rating active"></i></a> <a
                                           href="#"><i class="icofont-ui-rating"></i></a> <b
-                                          class="text-black ml-2">334</b>
+                                          class="text-black ml-2">총 방문자 수 : ${reservation}</b>
                                     </div>
                                     <p class="text-black mb-4 mt-2">Rated 3.5 out of 5</p>
                                  </div>
@@ -1578,15 +1595,13 @@ body, h1, h2, h3 {
    <div class="container">
       <footer class="py-3 my-4">
          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/"
                class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Pricing</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
                class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/Projectreview"
                class="nav-link px-2 text-muted">About</a></li>
          </ul>
          <p class="text-center text-muted">© 2021 Company, Inc</p>
