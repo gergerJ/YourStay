@@ -2,8 +2,11 @@ package yourstay.md.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,10 +15,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.log4j.Log4j;
 import yourstay.md.domain.Accommodation;
+import yourstay.md.domain.Image;
+import yourstay.md.domain.MemberVO;
+import yourstay.md.domain.Reservation;
+import yourstay.md.domain.ReservationCheck;
 import yourstay.md.domain.resultVO;
 import yourstay.md.domain.reviewVO;
 import yourstay.md.mapper.SearchMapper;
+import yourstay.md.service.AccommodationService;
 import yourstay.md.service.PriceService;
+import yourstay.md.service.SearchService;
 
 @Log4j
 @Controller
@@ -24,29 +33,39 @@ public class RouteController {
 	PriceService priceService;
 
 	@Autowired
-	SearchMapper mapper;
+	SearchService searchService;
+	
+	@Autowired
+	AccommodationService accommodationService;
 
-	@RequestMapping(value = "searchInList.do")
+	@GetMapping(value = "searchInList.do")
 	@ResponseBody
 	public List<Accommodation> searchList(@RequestParam String aloc, @RequestParam String startdate,
 			@RequestParam String deadline, @RequestParam String person) {
 		System.out.println(aloc + " " + startdate + " " + deadline + " " + person);
 		int p = Integer.parseInt(person);
 
-		List<Accommodation> acvo = mapper.getAccommodationListBySearchBar(aloc, startdate, deadline, p);
+		List<Accommodation> acvo = searchService.getAccommodationListBySearchBar(aloc, startdate, deadline, p);
 		log.info(acvo.size());
 		log.info(acvo.toString());
 		return acvo;
 	}
 
-	@RequestMapping(value = "searchInListFromMainGet.do", method = RequestMethod.GET)
+	@GetMapping(value = "searchInListFromMainGet.do")
 	public ModelAndView searchGetFromMain(@RequestParam String aloc, @RequestParam String startdate,
 			@RequestParam String deadline, @RequestParam String person) {
 		log.info(aloc + " " + startdate + " " + deadline + " " + person);
 		int p = Integer.parseInt(person);
-
-		List<Accommodation> acvo = mapper.getAccommodationListBySearchBar(aloc, startdate, deadline, p);
-		log.info(acvo.size());
+		List<Accommodation> acvo = searchService.getAccommodationListBySearchBar(aloc, startdate, deadline, p);
+		log.info("List<Accommodation> acvo size : "+ acvo.size());
+		for(Accommodation ac:acvo) {//¼÷¼Ò¸®½ºÆ® ÀÌ¹ÌÁö	
+			List<Image>roomImage = accommodationService.selectRoomImageS(ac.getAid());
+			log.info("searchGetFromMain ///acvo.get("+ac+").getAid(): " + ac.getAid());
+			log.info("searchGetFromMain ///roomImage: " + roomImage);
+			log.info("searchGetFromMain ///roomImage.get(0).getStored_file_name() : " + roomImage.get(0).getStored_file_name());
+			ac.setIpath1(roomImage.get(0).getStored_file_name());
+		}	
+//		log.info("acvo 3¹øÂ° : "+acvo.get(3).getIpath1());
 		log.info(acvo.toString());
 		ModelAndView mv = new ModelAndView("searchList", "acvo", acvo);
 		mv.setViewName("searchList");
@@ -59,27 +78,61 @@ public class RouteController {
 
 		return mv;
 	}
+	@GetMapping(value = "searchByLocation")
+	public ModelAndView searchByLocation(String aloc) {
+		List<Accommodation> acvo = searchService.getAccommodationListByLocation(aloc);
+		log.info("List<Accommodation> acvo size : "+ acvo.size());
+		for(Accommodation ac:acvo) {//¼÷¼Ò¸®½ºÆ® ÀÌ¹ÌÁö	
+			List<Image>roomImage = accommodationService.selectRoomImageS(ac.getAid());
+			log.info("searchGetFromMain ///acvo.get("+ac+").getAid(): " + ac.getAid());
+			log.info("searchGetFromMain ///roomImage: " + roomImage);
+			log.info("searchGetFromMain ///roomImage.get(0).getStored_file_name() : " + roomImage.get(0).getStored_file_name());
+			ac.setIpath1(roomImage.get(0).getStored_file_name());
+		}	
+//		log.info("acvo 3¹øÂ° : "+acvo.get(3).getIpath1());
+		log.info(acvo.toString());
+		ModelAndView mv = new ModelAndView("searchList", "acvo", acvo);
+		mv.setViewName("searchList");
+		mv.addObject("acvo", acvo);
 
-	@RequestMapping(value = "roomDetailInfo", method = RequestMethod.GET)
+		return mv;
+	}
+
+	@GetMapping(value = "roomDetailInfo")
 	public ModelAndView searchDetail(@RequestParam long aid, @RequestParam String rstart,
-			@RequestParam String rend) {
+			@RequestParam String rend,HttpSession session) {
 		ModelAndView mv = new ModelAndView();
 		log.info("RouteCon searchDetail ////  aid : " + aid + ", startDate : " + rstart + ", endDate : " + rend);
-		List<resultVO> reslist = mapper.getAccommodationByAccommodationId(aid);
-		List<reviewVO>  reviewlist = mapper.getReviewByAccommodationId(aid);
-		log.info("searchDetail reviewlist : "+ reviewlist);
-		log.info("searchDetail reslist : "+ reslist);
+		List<Image> roomImage = accommodationService.selectRoomImageS(aid); //¼÷¼ÒÀÌ¹ÌÁö
+		String ipath1 = roomImage.get(0).getStored_file_name();
+		String ipath2 = roomImage.get(1).getStored_file_name();
+		String ipath3 = roomImage.get(2).getStored_file_name();
+//	    MemberVO mvo =(MemberVO)session.getAttribute("loginOkUser");
+//	    long mseq = mvo.getMseq();
+		List<resultVO> reslist = searchService.getAccommodationByAccommodationId(aid);
+		List<reviewVO>  reviewlist = searchService.getReviewByAccommodationId(aid);
+		long reservation = searchService.getCountGuest(aid);
+		log.info("RouteCon searchDetail mseq : "+ aid);
+		log.info("RouteCon searchDetail ipath1 : "+ ipath1);
+		log.info("RouteCon searchDetail roomImage : "+ roomImage);
+		log.info("RouteCon searchDetail reviewlist : "+ reviewlist);
+		log.info("RouteCon searchDetail reslist : "+ reslist);
+		log.info("RouteCon searchDetail reservation : "+ reservation);
 		resultVO resVO = reslist.get(0);
-		log.info("searchDetail resVO : "+ resVO);
-		long diffDays = priceService.daysCalc(rstart, rend);// ìˆ™ë°•ì¼ìˆ˜ ê³„ì‚°
-		long resultprice = priceService.resultPrice(resVO, diffDays);//ìˆ™ë°•ì¼ìˆ˜ì— ë”°ë¥¸ ìµœì¢… ê¸ˆì•¡ ê³„ì‚°
-		resVO.setResultprice(resultprice);//ìµœì¢…ê¸ˆì•¡ê³„ì‚° ì ìš©
-		resVO.setRstart(rstart);// ì‚¬ìš©ìì„ íƒ ì‹œì‘ë‚ ì§œ ì ìš©
-		resVO.setRend(rend);// ì‚¬ìš©ìì„ íƒ ëë‚ ì§œ ì ìš©
-		resVO.setDays(diffDays);// ì‚¬ìš©ìì„ íƒ ìˆ™ë°•ì¼ìˆ˜ ì ìš©
+		log.info("RouteCon searchDetail resVO : "+ resVO);
+		long diffDays = priceService.daysCalc(rstart, rend);// ¼÷¹ÚÀÏ¼ö °è»ê
+		long resultprice = priceService.resultPrice(resVO, diffDays);//¼÷¹ÚÀÏ¼ö¿¡ µû¸¥ ÃÖÁ¾ ±İ¾× °è»ê
+		resVO.setIpath1(ipath1);
+		resVO.setIpath2(ipath2);
+		resVO.setIpath3(ipath3);
+		resVO.setResultprice(resultprice);//ÃÖÁ¾±İ¾×°è»ê Àû¿ë
+		resVO.setRstart(rstart);// »ç¿ëÀÚ¼±ÅÃ ½ÃÀÛ³¯Â¥ Àû¿ë
+		resVO.setRend(rend);// »ç¿ëÀÚ¼±ÅÃ ³¡³¯Â¥ Àû¿ë
+		resVO.setDays(diffDays);// »ç¿ëÀÚ¼±ÅÃ ¼÷¹ÚÀÏ¼ö Àû¿ë
 		resVO.setAid(aid);
-		mv.addObject("reslist", reviewlist);//ë¦¬ë·°ë¦¬ìŠ¤íŠ¸ ì „ë‹¬
-		mv.addObject("resVO", resVO);//ìˆ™ì†Œì •ë³´ ì „ë‹¬
+		mv.addObject("reservation",reservation);
+		mv.addObject("reslist", reviewlist);//¸®ºä¸®½ºÆ® Àü´Ş
+		mv.addObject("resVO", resVO);//¼÷¼ÒÁ¤º¸ Àü´Ş
 		mv.setViewName("info/info");
 		log.info("searchDetail resVO.getAid() : " + resVO.getAid());
 		log.info("searchDetail resultVO: " + resVO.toString());

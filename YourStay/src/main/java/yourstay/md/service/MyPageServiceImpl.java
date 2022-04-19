@@ -8,7 +8,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jdk.internal.jline.internal.Log;
 import lombok.extern.log4j.Log4j;
 import yourstay.md.domain.Accommodation;
 import yourstay.md.domain.MemberVO;
@@ -30,7 +29,7 @@ public class MyPageServiceImpl implements MyPageService {
 	MemberMapper memberMapper;
 
 	/*
-	 * íšŒì›ì˜ ì°œì •ë³´ë½‘ê¸°
+	 * È¸¿øÀÇ ÂòÁ¤º¸»Ì±â
 	 */
 	@Override
 	public List<WishListVO> getWishAidS(long mseq) {
@@ -38,7 +37,7 @@ public class MyPageServiceImpl implements MyPageService {
 	}
 
 	/*
-	 * íšŒì›ì´ ì°œí•œ ìˆ™ë°•ì—…ì²´ ë¦¬ìŠ¤íŠ¸
+	 * È¸¿øÀÌ ÂòÇÑ ¼÷¹Ú¾÷Ã¼ ¸®½ºÆ®
 	 */
 	@Override
 	public List<Accommodation> getWishListS(List<WishListVO> wishlist) {
@@ -46,19 +45,19 @@ public class MyPageServiceImpl implements MyPageService {
 	}
 	
 	/*
-	 * íšŒì›ì´ ì°œí•œ ìˆ™ë°•ì—…ì²´ ë“±ë¡
+	 * È¸¿øÀÌ ÂòÇÑ ¼÷¹Ú¾÷Ã¼ µî·Ï
 	 */
 	@Override
 	public int addWishListS(WishListVO wishListvo) {
 		//int result = session.insert("yourstay.md.mapper.MyPageMapper.addWish", reviewvo);
 		log.error("#########MyPageServiceImpl addWishListS: "+wishListvo);
 		
-		log.info("service  - addWishList ì™„ë£Œ");
+		log.info("service  - addWishList ¿Ï·á");
 		int result = myPageMapper.addWishList(wishListvo);
 		if(result>0) {
-			log.info("MyPageService addWishListS íšŒì›ë“±ë¡ ì„±ê³µ");
+			log.info("MyPageService addWishListS È¸¿øµî·Ï ¼º°ø");
 		}else {
-			log.info("MyPageService addWishListS íšŒì›ë“±ë¡ ì‹¤íŒ¨");
+			log.info("MyPageService addWishListS È¸¿øµî·Ï ½ÇÆĞ");
 		}
 		return result;
 	}
@@ -79,25 +78,25 @@ public class MyPageServiceImpl implements MyPageService {
 		return wishMap;
 	}
 	/*
-	 * íšŒì›ì´ ì„ íƒí•œ ì°œ ë¦¬ìŠ¤íŠ¸ í•œê°€ì§€ ì„ íƒí•˜ê¸° ! 
+	 * È¸¿øÀÌ ¼±ÅÃÇÑ Âò ¸®½ºÆ® ÇÑ°¡Áö ¼±ÅÃÇÏ±â ! 
 	 */
 	@Override
 	public boolean findWishListS(WishListVO wishListvo) {
-		log.info("MyPageServiceImpl findWishList ì°¾ê¸° ì„±ê³µ! ");
+		log.info("MyPageServiceImpl findWishList Ã£±â ¼º°ø! ");
 		String result = myPageMapper.findWishList(wishListvo);
 		return Boolean.parseBoolean(result);
 	}
 	/*
-	* íšŒì›ì´ ì°œí•œ List ì°¾ê¸°(ì„ íƒí•˜ê¸°)
+	* È¸¿øÀÌ ÂòÇÑ List Ã£±â(¼±ÅÃÇÏ±â)
 	*/
 	@Override
 	public int deleteWishListS(WishListVO wishListvo) {
-		log.info("MyPageServiceImpl deleteWishList ì´ë™ ! ");
+		log.info("MyPageServiceImpl deleteWishList ÀÌµ¿ ! ");
 		int result = myPageMapper.deleteWishList(wishListvo);
 		if(result>0) {
-			log.info("MyPageServiceImpl deleteWishList ì‚­ì œ ì„±ê³µ");
+			log.info("MyPageServiceImpl deleteWishList »èÁ¦ ¼º°ø");
 		}else{
-			log.info("MyPageServiceImpl deleteWishList ì‚­ì œ ì‹¤íŒ¨");
+			log.info("MyPageServiceImpl deleteWishList »èÁ¦ ½ÇÆĞ");
 		}
 		return result;
 	}

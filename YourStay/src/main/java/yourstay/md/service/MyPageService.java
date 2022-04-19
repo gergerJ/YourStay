@@ -10,26 +10,26 @@ import yourstay.md.domain.reviewVO;
 
 public interface MyPageService {
 	/*
-	 * íšŒì›ì˜ ì°œì •ë³´ ì „ì²´ List
+	 * È¸¿øÀÇ ÂòÁ¤º¸ ÀüÃ¼ List
 	 */
 	public List<WishListVO> getWishAidS(long mseq);
 	/*
-	 * íšŒì›ì´ ì°œí•œ ìˆ™ë°•ì—…ì²´ ë¦¬ìŠ¤íŠ¸
+	 * È¸¿øÀÌ ÂòÇÑ ¼÷¹Ú¾÷Ã¼ ¸®½ºÆ®
 	 */
 	public List<Accommodation> getWishListS(List<WishListVO> wishlist);
 	/*
-	 * íšŒì›ì´ ì°œí•œ ìˆ™ë°•ì—…ì²´ ë“±ë¡ ê¸°ëŠ¥
+	 * È¸¿øÀÌ ÂòÇÑ ¼÷¹Ú¾÷Ã¼ µî·Ï ±â´É
 	 */
 	public int addWishListS(WishListVO wishListvo);
 	
 	
 	Map<String, List> getWishS(long mseq);
 	/*
-	* íšŒì›ì´ ì°œí•œ List ì°¾ê¸°(ì„ íƒí•˜ê¸°)
+	* È¸¿øÀÌ ÂòÇÑ List Ã£±â(¼±ÅÃÇÏ±â)
 	*/
 	public boolean findWishListS(WishListVO wishListvo);
 	/*
-	* íšŒì›ì´ ì°œí•œ List ì‚­ì œí•˜ê¸°
+	* È¸¿øÀÌ ÂòÇÑ List »èÁ¦ÇÏ±â
 	*/
 	public int deleteWishListS(WishListVO wishListvo);
 	

@@ -1,10 +1,8 @@
 package yourstay.md.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,103 +20,65 @@ import org.springframework.web.servlet.ModelAndView;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import oracle.jdbc.proxy.annotation.Post;
-import yourstay.md.domain.Accommodation;
-import yourstay.md.domain.Accomoption;
 import yourstay.md.domain.Image;
 import yourstay.md.domain.MemberVO;
 import yourstay.md.domain.Reservation;
 import yourstay.md.domain.WishListVO;
 import yourstay.md.domain.resultVO;
 import yourstay.md.domain.reviewVO;
+import yourstay.md.domain.roomRegisterVO;
 import yourstay.md.mapper.MemberMapper;
 import yourstay.md.mapper.ReviewMapper;
 import yourstay.md.service.AccommodationService;
+import yourstay.md.service.FileService;
 import yourstay.md.service.MemberService;
 import yourstay.md.service.MyPageService;
+import yourstay.md.service.MyRoomService;
 import yourstay.md.service.RoomHistoryService;
 
 @Log4j
-//@AllArgsConstructor
+@AllArgsConstructor
 @Controller
 @RequestMapping("/mypage")
 public class MypageController {
 	@Autowired
-	private AccommodationService accommodationService;
-//	@Autowired
-//	private MemberMapper memberMapper;
-	@Autowired
-	private MemberService memberService;
+	private MemberMapper memberMapper;
 	@Autowired
 	private MyPageService myPageService;
 	@Autowired
 	private ReviewMapper reviewMapper;
 	@Autowired
 	private RoomHistoryService roomService;
-	@Autowired(required = false)
-	private WishListVO wishListvo;
+	@Autowired
+	private MyRoomService myRoomService;
+	@Autowired
+	private MemberService memberService;
+	@Autowired
+	private AccommodationService accommodationService;
 	
 	
 	@GetMapping(value="/home")
     public ModelAndView gohome(HttpSession session){
-        log.info("MypageController -> gohome 요청");
-        MemberVO vo = memberService.getUser((String)session.getAttribute("memail"));
+        log.info("MypageController -> gohome ��û");
+        MemberVO vo = memberMapper.getUser((String)session.getAttribute("memail"));
         ModelAndView mv = new ModelAndView("mypage/home","member",vo);
         return mv;
     }
-	@PostMapping(value="/register.do")
-	   public ModelAndView roomRegister(ModelAndView mv, HttpServletRequest request){
-	      log.info("roomOption Data -> info 전달");
-	      MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-	      log.info("##### request" + request);
-	      log.info("##### multipartRequest" + multipartRequest);
-		  //MultipartFile file = multipartRequest.getFile("ipath1");
-		  //log.info("file.getSize() : " + file.getSize());
-	      
-	      //todo : 파일이 없으면 if로직 추가 
-		  List<MultipartFile> files = new ArrayList<MultipartFile>();
-		  for(int i = 0; i<3;i++) {
-			  MultipartFile file = multipartRequest.getFile("ipath"+(i+1));
-			  files.add(file);
-		  }
-		  MultipartFile file1 = files.get(0);
-		  
-		  MultipartFile file = multipartRequest.getFile("ipath3");
-		  log.info("file.getSize() : " + file.getSize());
-//	      log.info("로그인한 회원의 번호: " + mseq);
-//	      log.info("result aname: " + registervo.getAname());
-//	      log.info("aname: " + aname);
-//	      accommodationService.inssertImageS(img);// 이미지 테이블에 insert
-//	      accommodationService.insertAccommodationS(ac, mpRequest);// 숙소  테이블에 insert
-//	      log.info("옵션번호: "+ aco.getAid() +", 숙소번호 : "+aco.getOid()+", 방개수 : "+aco.getRnum()+", TV유무 : "+ aco.getTv());
-	      //여기에  info페이지로 값을 전달 
-	      mv.setViewName("/mypage/home");
-	      return mv;
-	   }
 	
-	@PostMapping(value="/regi")
-	public String test() {
-		log.info("test");
-		return null;
-	}
-	
-	@GetMapping(value="/wishlist/{mseq}")
-    public String wishlist(@PathVariable("mseq") long mseq, Model model){
-        log.info("MypageController -> wishlist 요청");
-        Map<String, List> wishMap = myPageService.getWishS(mseq);
-    	
+	@GetMapping(value = "/wishlist/{mseq}")
+	public String wishlist(@PathVariable("mseq") long mseq, Model model) {
+		log.info("MypageController -> wishlist ��û");
+		Map<String, List> wishMap = myPageService.getWishS(mseq);
+
 		model.addAttribute("wishMap", wishMap);
-		
+
 		return "mypage/wishlist";
-    }
+	}
 	@GetMapping(value="/roomHistory")
     public ModelAndView roomHistory(long mseq){
-        log.info("MypageController -> roomHistory 요청");
         List<Reservation> vo = roomService.getRoomList(mseq);
-        ModelAndView mv = new ModelAndView("mypage/roomHistory","vo",vo);
         log.info("####vo:"+vo.toString());
-       
-        
+    	ModelAndView mv = new ModelAndView("mypage/roomHistory","vo",vo);
         return mv;
     }
    @GetMapping(value="/review")
@@ -127,7 +87,7 @@ public class MypageController {
         List<reviewVO> vo = reviewMapper.getUser((String) session.getAttribute("memail"));
         log.info("####vo:"+vo);
         reviewVO reviewvo = vo.get(0);
-        reviewvo.setAid(aid); //유저가 선택한 숙소번호 입력
+        reviewvo.setAid(aid); //������ ������ ���ҹ�ȣ �Է�
         ModelAndView mv = new ModelAndView("mypage/review","member",reviewvo);
         
         return mv;
@@ -135,10 +95,16 @@ public class MypageController {
    
    @GetMapping(value="/roomReservation")
    public ModelAndView roomReservation(long mseq){
-       log.info("MypageController -> roomReservation 요청");
+       log.info("MypageController -> roomReservation ��û");
        List<Reservation> vo = roomService.getRoomList(mseq);
-       ModelAndView mv = new ModelAndView("mypage/roomReservation","vo",vo);
-       log.info("####vo:"+vo.toString());
+       for(Reservation ac: vo) {
+			List<Image>roomImage = accommodationService.selectRoomImageS(ac.getAid());
+			log.info("searchGetFromMain ///acvo.get("+ac+").getAid(): " + ac.getAid());
+			log.info("searchGetFromMain ///roomImage: " + roomImage);
+			log.info("searchGetFromMain ///roomImage.get(0).getStored_file_name() : " + roomImage.get(0).getStored_file_name());
+			ac.setIpath1(roomImage.get(0).getStored_file_name());
+		}
+	   ModelAndView mv = new ModelAndView("mypage/roomReservation","vo",vo);
        
        return mv;
    }
@@ -152,9 +118,27 @@ public class MypageController {
        return mv;
    }
    
+   @GetMapping(value="/myRoom")
+   public ModelAndView myRoom(@RequestParam long mseq) {
+	   List<Reservation> reservation = myRoomService.getMyRoomList(mseq);
+	   log.info("MypageController -> roomRegister: "+ reservation);
+	   ModelAndView mv = new ModelAndView("mypage/myRoom","vo",reservation);
+       return mv;
+   }
+   @GetMapping(value="/modifyRoom")
+   public ModelAndView modifyRoom(@RequestParam long aid, @RequestParam long mseq) {
+	   log.info("#(1)MypageController -> aid, mseq: "+ aid+" ,"+ mseq);
+	   log.info("#(2)MypageController myRoomService : " + myRoomService);
+	   List<roomRegisterVO> roomRegisterVO = myRoomService.modifyMyRoom(aid, mseq);
+	   log.info("#(3)MypageController -> roomRegister: "+ roomRegisterVO.size());
+	   
+	   ModelAndView mv = new ModelAndView("mypage/modifyRoom","vo",roomRegisterVO);
+	   
+       return mv;
+   }
    @GetMapping("updateUser")
 	public ModelAndView findMember(ModelAndView mv, String memail) {
-		log.info("updateUser -> updateUser 페이지 이동 ");
+		log.info("updateUser -> updateUser ������ �̵� ");
 		log.info("memail: "+ memail);
 		MemberVO findMember = memberService.getUser(memail);
 		log.info("mcallnum : " + findMember.getMcallnum());
@@ -162,65 +146,43 @@ public class MypageController {
 		mv.setViewName("/mypage/updatePage");
 		return mv;
 	}
-	@PostMapping("updateUser.do")
-	public ModelAndView updateMember(ModelAndView mv, long mseq, String mname, String memail, String mpwd, int mcallnum) {
-        MemberVO member = new MemberVO(mseq, mname, memail, mpwd, mcallnum, 0);
-
-		log.info("mseq getMseq 값 : " + member.getMseq()); // 여기까지 됨! 
-		log.info("mseq getMname 값 : " + member.getMname());
-		log.info("mseq getMemail 값 : " + member.getMemail());
-		log.info("mseq getMpwd 값 : " + member.getMpwd());
-		log.info("mseq getMcallnum 값 : " + member.getMcallnum());
-		
-		log.info("####memberVO : " + member);
-	
-		int updateResult = memberService.updateUser(member);
-		log.info("11111111111111");
-		if(updateResult>0) {
-			log.info("Member Update 성공");
-		}else {
-			log.info("Member Update 실패");
-		}
-		mv.setViewName("redirect:/mypage/home");
-		return mv;
-	}
-	@GetMapping("removeUser")
+   @GetMapping("removeUser")
 	public ModelAndView findRemoveUser(ModelAndView mv, String memail) {
 		MemberVO findMember = memberService.getUser(memail);
 		mv.addObject("findMember", findMember);
 		mv.setViewName("/mypage/removePage");
 		return mv;
 	}
-	
-	@PostMapping("removeUser.do")
-	public ModelAndView removeUser(ModelAndView mv, String memail, HttpSession session) {
-		int result = memberService.removeUser(memail);
-		if(result>0) {
-			log.info("## Controller removeUser 성공!!");
-			session.invalidate();
-		}else {
-			log.info("## Controller removeUser 실패!!");
+   @GetMapping(value="/goReservationList")
+   public ModelAndView goReservationList(long mseq){
+       log.info("MypageController -> goReservationList ��û");
+       List<Reservation> vo = roomService.goReservationList(mseq);
+       for(Reservation ac: vo) {
+			List<Image>roomImage = accommodationService.selectRoomImageS(ac.getAid());
+			log.info("searchGetFromMain ///acvo.get("+ac+").getAid(): " + ac.getAid());
+			log.info("searchGetFromMain ///roomImage: " + roomImage);
+			log.info("searchGetFromMain ///roomImage.get(0).getStored_file_name() : " + roomImage.get(0).getStored_file_name());
+			ac.setIpath1(roomImage.get(0).getStored_file_name());
 		}
-		mv.setViewName("redirect: /");
-		return mv;
-	}
-
-	/*
-	 * 찜하기 부분 추가 TEst
-	 */	
-	@ResponseBody
-	@PostMapping(value="/wishlist/addwish")
-	public String addWishList(HttpSession session, WishListVO wishlistvo) {
-       log.info("!@@@@@@@@@wishlistvo : " + wishlistvo);
-       boolean findResult = myPageService.findWishListS(wishlistvo);
-       if(findResult) {
-    	   myPageService.deleteWishListS(wishlistvo);
-    	   log.info("## Controller deleteWishList 삭제 성공!!!!!!!!!!!!");
-    	   return "deleteWishList";
-       }else {
-    	   myPageService.addWishListS(wishlistvo);
-           log.info("## Controller wishlist 등록 성공");
-           return "addWishListS";
-       }
-    }
+	   ModelAndView mv = new ModelAndView("mypage/goReservationList","vo",vo);
+       
+       return mv;
+   }
+   @GetMapping(value="/accessPage")
+   public ModelAndView accessPage(long rid){
+	   log.info("MypageController -> accessPage rid: "+rid);
+       log.info("MypageController -> accessPage ��û");
+       List<Reservation> vo = roomService.goReservationRoom(rid);
+       log.info("MypageController -> accessPage :"+vo);
+       for(Reservation ac: vo) {
+			List<Image>roomImage = accommodationService.selectRoomImageS(ac.getAid());
+			log.info("searchGetFromMain ///acvo.get("+ac+").getAid(): " + ac.getAid());
+			log.info("searchGetFromMain ///roomImage: " + roomImage);
+			log.info("searchGetFromMain ///roomImage.get(0).getStored_file_name() : " + roomImage.get(0).getStored_file_name());
+			ac.setIpath1(roomImage.get(0).getStored_file_name());
+		}
+	   ModelAndView mv = new ModelAndView("mypage/goReservationRoom","vo",vo);
+       
+       return mv;
+   }
 }

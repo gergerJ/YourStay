@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+   <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -44,6 +44,20 @@ div.list-font {
 .sort-in{
    width: 35%
 }
+.wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+.wrap * {padding: 0;margin: 0;}
+.wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+.wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+.info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+.info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+.info .close:hover {cursor: pointer;}
+.info .body {position: relative;overflow: hidden;}
+.info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+.desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+.info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+.info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+.info .link {color: #5085BB;}
 </style>
 
 <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"
@@ -66,6 +80,7 @@ div.list-font {
    href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap"
    rel="stylesheet">
 <script>
+	
    $(document)
        .ready(
              function() {
@@ -160,6 +175,7 @@ div.list-font {
                  });
               });
              });
+   
 </script>
 <%
    String memail = (String) session.getAttribute("memail");
@@ -171,7 +187,7 @@ div.list-font {
          class="row flex-nowrap justify-content-between align-items-center">
          <div class="col-4 pt-1"></div>
          <div class="col-4 text-center">
-            <a class="blog-header-logo text-dark" href="#"
+            <a class="blog-header-logo text-dark" href="/"
                style="text-decoration: none">YourTrip</a>
          </div>
          <div class="col-4 d-flex justify-content-end align-items-center">
@@ -196,19 +212,19 @@ div.list-font {
           <%
             }else{
          %>
-         <p style="margin-top: 3%; margin-right: 3%;"><%=memail %>님 반갑습니다!</p>
+         <a href="/mypage/home" style="margin-top: 3%; margin-right: 3%;font-size: 130%;"><%=memail %>님 반갑습니다!</a>
          <a href="../login/logout.do" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">로그아웃</a>
          <%} %>
          </c:when> 
          <c:otherwise>
-         <p style="margin-top: 3%; margin-right: 3%;"><%=memail%>님 반갑습니다!</p>
+         <a href="/mypage/home" style="margin-top: 3%; margin-right: 3%;font-size: 130%;"><%=memail %>님 반갑습니다!</a>
          <a href="../login/logout.do" class="btn btn-secondary" style="background-color: #2AC1BC!important;border-color: #2AC1BC!important;">로그아웃</a>
          </c:otherwise>
          </c:choose>
          </div>
       </div>
    </header>
-   <main class="container">
+   <main class="container" style="min-height : 900px">
 
          <form id="seatrchForm">
             <div id="search" class="radius">
@@ -264,7 +280,7 @@ div.list-font {
                style="cursor: pointer;">
       </div>
       </form>
-         <c:forEach items="${acvo}" var="acvo">
+         <c:forEach items="${acvo}" var="acvo" >
          <div
             class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
             style="width: 50%;">
@@ -279,71 +295,88 @@ div.list-font {
 
             </div>
             <div class="col-auto d-none d-lg-block">
-               <svg class="bd-placeholder-img" width="200" height="250"
-                  xmlns="http://www.w3.org/2000/svg" role="img"
-                  aria-label="Placeholder: Thumbnail"
-                  preserveAspectRatio="xMidYMid slice" focusable="false">
-                  <title>Placeholder</title><rect width="100%" height="100%"
-                     fill="#55595c"></rect>
-                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
+            <img width="400" height="580" class="img-fluid rounded mb-4 mb-lg-0" src="../../resources/images/roomImg/${acvo.aid}/${acvo.ipath1}" alt="..." />
             </div>
          </div>
       </div>
    </c:forEach>
    </div>
-   <div class="map-area" style="    bottom: -58% !important;
+   <div class="map-area" style="bottom: -13% !important;
     position: absolute !important;
     left: 53% !important;">
-      <div id="map" style="width: 600px; height: 530px;"></div>
-      <script type="text/javascript"
-         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b87f2182c111fec7ca0b3a2aaede2356"></script>
-      <script>
-         var container = document.getElementById('map');
-         var options = {
-            center : new kakao.maps.LatLng(37.478890, 126.878650),
-            level : 3
-         };
+      <div id="map" style="width: 600px; height: 500px;"></div>
+      <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b87f2182c111fec7ca0b3a2aaede2356&libraries=services,clusterer,drawing">
+	</script>
+<script>
 
-         var map = new kakao.maps.Map(container, options);
+      var container = document.getElementById('map');
+      var options = {
+         center: new kakao.maps.LatLng(33.450701, 126.570667),
+         level: 6
+      };
 
-         var data = [
-               [ 37.478890, 126.878650,
-                     '<div style="padding:5px">내용</div>' ],
-               [ 37.47796194357405, 126.8805951377817,
-                     '<div style="padding:5px">내용</div>' ],
-               [ 37.481417597740965, 126.87617383635731,
-                     '<div style="padding:5px">내용</div>' ]
+      var map = new kakao.maps.Map(container, options);
+      <c:forEach items="${acvo}" var="maps">
+      
+      // 주소-좌표 변환 객체를 생성합니다
+      var geocoder = new kakao.maps.services.Geocoder();
+      // 주소로 좌표를 검색합니다
+      geocoder.addressSearch('${maps.amap}', function(result, status) {
+            
+          // 정상적으로 검색이 완료됐으면 
+           if (status === kakao.maps.services.Status.OK) {
 
-         ]
+              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-         for (var i = 0; i < data.length; i++) {
+              // 결과값으로 받은 위치를 마커로 표시합니다
+              var marker = new kakao.maps.Marker({
+                  map: map,
+                  position: coords
+              });
 
-            // 마커가 표시될 위치입니다 
-            var markerPosition = new kakao.maps.LatLng(37.478890,
-                  126.878650);
-
-            // 마커를 생성합니다
-            var marker = new kakao.maps.Marker({
-               position : markerPosition
-            });
-
-            // 마커가 지도 위에 표시되도록 설정합니다
-            marker.setMap(map);
-
-            var iwContent = '<div style="padding:5px;">숙소 이름<br><a href="https://map.kakao.com/link/to/Hello World!,33.450701,126.570667" style="color:blue" target="_blank">카카오맵 길찾기</a></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-            iwPosition = new kakao.maps.LatLng(data[i][0], data[i][1]); //인포윈도우 표시 위치입니다
-
-            // 인포윈도우를 생성합니다
-            var infowindow = new kakao.maps.InfoWindow({
-               position : iwPosition,
-               content : data[i][2]
-            });
-
-            // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
-            infowindow.open(map, marker);
-
-         }
+              // 커스텀 오버레이에 표시할 컨텐츠 입니다
+              // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+              // 별도의 이벤트 메소드를 제공하지 않습니다 
+              var content = '<div class="wrap">' + 
+                          '    <div class="info">' + 
+                          '        <div class="title">' + 
+                          '            ${maps.aname}' + 
+                          '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+                          '        </div>' + 
+                          '        <div class="body">' + 
+                          '            <div class="img">' +
+                          '                <img src="../../resources/images/logo.png" width="73" height="70">' +
+                          '           </div>' + 
+                          '            <div class="desc">' + 
+                          '                <div class="ellipsis">${maps.amap}</div>' + 
+                          '                <div><a href="https://map.kakao.com/link/to/${maps.aname},${maps.amap}" target="_blank" class="link">길찾기</a>' + 
+                          '            </div>' + 
+                          '        </div>' + 
+                          '    </div>' +    
+                          '</div>';
+   
+              // 마커 위에 커스텀오버레이를 표시합니다
+              // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+              var overlay = new kakao.maps.CustomOverlay({
+                  content: content,
+                  map: map,
+                  position: marker.getPosition()       
+              });
+   
+              // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+              kakao.maps.event.addListener(marker, 'click', function() {
+                  overlay.setMap(map);
+              });
+   
+              // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다 
+              function closeOverlay() {
+                  overlay.setMap(null);     
+              }
+              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+              map.setCenter(coords);
+          } 
+      });    
+      </c:forEach>
       </script>
    </div>
    </div>
@@ -353,20 +386,30 @@ div.list-font {
    <div class="container">
       <footer class="py-3 my-4">
          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/"
                class="nav-link px-2 text-muted">Home</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Features</a></li>
-            <li class="nav-item"><a href="#"
-               class="nav-link px-2 text-muted">Pricing</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/mypage/home"
+               class="nav-link px-2 text-muted">MyPage</a></li>
+            <li class="nav-item"><a href="/board/list"
                class="nav-link px-2 text-muted">FAQs</a></li>
-            <li class="nav-item"><a href="#"
+            <li class="nav-item"><a href="/Projectreview"
                class="nav-link px-2 text-muted">About</a></li>
          </ul>
          <p class="text-center text-muted">© 2021 Company, Inc</p>
       </footer>
    </div>
-
+   <input type="hidden" value="${acvo[0].aname}" id="AccommodationCount">
 </body>
+<script>
+	//검색조건 없을 경우 알람창
+	window.addEventListener('load', function () {
+			var resultAccommodation = $("#AccommodationCount").val(); // document.getElementById("AccommodationCount").val();
+			console.log(resultAccommodation);
+			if(resultAccommodation == ""){
+				alert("검색 조건에 만족하는 숙소가 없습니다");
+			}else{
+				
+			}
+		})
+</script>
 </html>
